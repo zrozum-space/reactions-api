@@ -1,7 +1,8 @@
 import * as fastify from "fastify";
-import { Server, IncomingMessage, ServerResponse } from "http";
+import { IncomingMessage, Server, ServerResponse } from "http";
 import router from "./router";
 
+const SERVER_PORT = 3000;
 const serverOptions: fastify.ServerOptions = {
   logger: process.env.NODE_ENV === "development"
 };
@@ -12,7 +13,8 @@ const app: fastify.FastifyInstance<
   ServerResponse
 > = fastify(serverOptions);
 
-// Middleware: Router
 app.register(router);
+app.listen(SERVER_PORT);
+console.log(`Fastify server running on port ${SERVER_PORT}`);
 
 export default app;

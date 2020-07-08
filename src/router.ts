@@ -1,7 +1,11 @@
-import { welcome, hello } from "./handlers";
+import { welcome } from "./handlers";
+import { FastifyInstance, RouteOptions } from "fastify";
 
-export default function router(fastify, opts, next) {
+export default function router(
+  fastify: FastifyInstance,
+  options: RouteOptions,
+  next: any
+) {
   fastify.get("/", welcome);
-  fastify.get("/api", hello);
   next();
 }
