@@ -1,7 +1,10 @@
 import { FastifyInstance, RouteOptions } from 'fastify'
-import { welcome } from './handlers'
+import { ReactionsService } from 'reactions-service'
 
-export default function router(fastify: FastifyInstance, options: RouteOptions, next: any): void {
-  fastify.get('/', welcome)
+const reactionsService = new ReactionsService()
+
+export default async function router(fastify: FastifyInstance, options: RouteOptions, next: any): Promise<void> {
+  fastify.get('/reactions/:date', await reactionsService.fetchReactionsByPostCreationDate.bind(reactionsService))
+  fastify.post('/reactions/:date', await reactionsService.incrementSpecifiedReaction.bind(reactionsService))
   next()
 }
