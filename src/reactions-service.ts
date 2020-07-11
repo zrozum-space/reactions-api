@@ -30,7 +30,24 @@ export class ReactionsService {
       return
     }
 
-    await storageGateway.save(date, ip, reaction)
+    const oldUserReaction: string = await storageGateway.fetchUserReaction(ip, date)
+    const allReactions: Reactions = await storageGateway.fetchAll(date)
+
+    storageGateway.saveUserReaction(date, ip, reaction)
+
+    if (oldUserReaction && oldUserReaction !== reaction) {
+      storageGateway.saveAllReactions(date, {
+        ...allReactions,
+        [oldUserReaction]: allReactions[oldUserReaction] -= 1,
+        [reaction]: allReactions[reaction] += 1,
+      })
+    } else {
+      storageGateway.saveAllReactions(date, {
+        ...allReactions,
+        [reaction]: allReactions[reaction] += 1,
+      })
+    }
+
     reply.header('Content-Type', 'application/json; charset=utf-8').status(204).send()
   }
 

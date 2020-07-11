@@ -10,25 +10,13 @@ const redisClient = redis.createClient({
 // redisClient.auth('pass')
 
 export class ReactionsStorageGateway {
-  public async save(creationDate: string, userAddress: string, reaction: string): Promise<void> {
-    const articleReactions = await this.fetchAll(creationDate)
-
-    this.saveAllReactions(articleReactions, creationDate, reaction)
-    this.saveUserReaction(userAddress, creationDate, reaction)
-  }
-
-  private saveAllReactions(articleReactions: Reactions, creationDate: string, reactionToIncrement: string): void {
+  public saveAllReactions(creationDate: string, payload: Reactions): void {
     const key = `article_${creationDate}`
-    redisClient.set(
-      key,
-      JSON.stringify({ ...articleReactions, [reactionToIncrement]: articleReactions[reactionToIncrement] += 1 }),
-      'EX',
-      60,
-    )
+    redisClient.set(key, JSON.stringify(payload), 'EX', 60)
     redisClient.persist(key)
   }
 
-  private saveUserReaction(userAddress: string, creationDate: string, reaction: string): void {
+  public saveUserReaction(creationDate: string, userAddress: string, reaction: string): void {
     const key = `${userAddress}_${creationDate}`
     redisClient.set(key, reaction, 'EX', 60)
     redisClient.persist(key)
