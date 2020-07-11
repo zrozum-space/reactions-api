@@ -9,7 +9,7 @@ export class ReactionsService {
     const {
       params: { date },
       ip,
-    } = request
+    }: any = request
     const reactions: Reactions = await storageGateway.fetchAll(date)
     const userReaction: string = await storageGateway.fetchUserReaction(ip, date)
     reply.header('Content-Type', 'application/json; charset=utf-8').send({ reactions, userReaction })
@@ -20,7 +20,7 @@ export class ReactionsService {
       ip,
       params: { date },
       body: { reaction },
-    } = request
+    }: any = request
 
     if (!this.isSatisfiedByReactionsType(reaction)) {
       reply
@@ -41,7 +41,7 @@ export class ReactionsService {
         [oldUserReaction]: allReactions[oldUserReaction] -= 1,
         [reaction]: allReactions[reaction] += 1,
       })
-    } else {
+    } else if (!oldUserReaction) {
       storageGateway.saveAllReactions(date, {
         ...allReactions,
         [reaction]: allReactions[reaction] += 1,
