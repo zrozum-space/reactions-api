@@ -1,7 +1,7 @@
-import { EnvironmentVariables } from 'environment-variables'
-import { Reactions } from 'reactions.type'
 import * as redis from 'redis'
 import { promisify } from 'util'
+import { EnvironmentVariables } from './environment-variables'
+import { Reactions } from './reactions.type'
 
 const redisClient = redis.createClient({
   host: EnvironmentVariables.REDIS_ADDRESS,

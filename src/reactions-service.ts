@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
-import { ReactionsStorageGateway } from 'reactions.storage-gateway'
-import { Reactions } from 'reactions.type'
+import { ReactionsStorageGateway } from './reactions.storage-gateway'
+import { Reactions } from './reactions.type'
 
 const storageGateway = new ReactionsStorageGateway()
 

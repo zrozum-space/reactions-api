@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `./${process.env.NODE_ENV === 'production' ? 'production' : 'development'}.env` })
+require('dotenv').config({ path: `./${process.env.NODE_ENV !== 'production' ? 'production' : 'development'}.env` })
 
 export class EnvironmentVariables {
   private constructor() {}

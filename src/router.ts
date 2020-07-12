@@ -1,5 +1,5 @@
 import { FastifyInstance, RouteOptions } from 'fastify'
-import { ReactionsService } from 'reactions-service'
+import { ReactionsService } from './reactions-service'
 
 const reactionsService = new ReactionsService()
 
