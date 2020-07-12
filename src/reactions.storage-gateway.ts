@@ -1,13 +1,13 @@
+import { EnvironmentVariables } from 'environment-variables'
 import { Reactions } from 'reactions.type'
 import * as redis from 'redis'
 import { promisify } from 'util'
 
 const redisClient = redis.createClient({
-  host: '127.0.0.1',
+  host: EnvironmentVariables.REDIS_ADDRESS,
+  auth_pass: EnvironmentVariables.REDIS_PASS,
   port: 6379,
 })
-
-// redisClient.auth('pass')
 
 export class ReactionsStorageGateway {
   public saveAllReactions(creationDate: string, payload: Reactions): void {

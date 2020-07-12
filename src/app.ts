@@ -3,9 +3,7 @@ import { IncomingMessage, Server, ServerResponse } from 'http'
 import router from './router'
 
 const SERVER_PORT = 3000
-const serverOptions: fastify.FastifyServerOptions = {
-  logger: process.env.NODE_ENV === 'development',
-}
+const serverOptions: fastify.FastifyServerOptions = { logger: true }
 
 const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify.fastify(serverOptions)
 
