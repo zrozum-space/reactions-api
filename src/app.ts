@@ -13,7 +13,7 @@ app.register(require('fastify-cors'), {
   allowedHeaders: ['Content-Type'],
   origin: ['http://localhost:8000', process.env.NODE_ENV === 'development' ? 'http://localhost:8000' : 'https://zrozum.space'],
 })
-app.listen(SERVER_PORT)
+app.listen(SERVER_PORT, '0.0.0.0')
 
 console.log(`Fastify server running on port ${SERVER_PORT}`)
 
