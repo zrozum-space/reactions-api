@@ -1,9 +1,20 @@
 import * as fastify from 'fastify'
+import * as fs from 'fs'
 import { IncomingMessage, Server, ServerResponse } from 'http'
 import router from './router'
 
 const SERVER_PORT = 3000
-const serverOptions: fastify.FastifyServerOptions = { logger: true }
+let serverOptions: fastify.FastifyServerOptions & { https?: any } = { logger: true }
+
+if (process.env.NODE_ENV === 'production') {
+  serverOptions = {
+    ...serverOptions,
+    https: {
+      key: fs.readFileSync('key.pem'),
+      cert: fs.readFileSync('cert.pem'),
+    },
+  }
+}
 
 const app: fastify.FastifyInstance<Server, IncomingMessage, ServerResponse> = fastify.fastify(serverOptions)
 
