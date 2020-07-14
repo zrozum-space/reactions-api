@@ -8,18 +8,19 @@ export class ReactionsService {
   public async fetchReactionsByPostCreationDate(request: FastifyRequest, reply: FastifyReply<any>): Promise<void> {
     const {
       params: { date },
-      ip,
+      headers,
     }: any = request
+    const userIp = headers['x-forwarded-for'].split(',')[0]
     const reactions: Reactions = await storageGateway.fetchAll(date)
-    const userReaction: string = await storageGateway.fetchUserReaction(ip, date)
+    const userReaction: string = await storageGateway.fetchUserReaction(userIp, date)
     reply.header('Content-Type', 'application/json; charset=utf-8').send({ reactions, userReaction })
   }
 
   public async incrementSpecifiedReaction(request: FastifyRequest, reply: FastifyReply<any>): Promise<void> {
     const {
-      ip,
       params: { date },
       body: { reaction },
+      headers,
     }: any = request
 
     if (!this.isSatisfiedByReactionsType(reaction)) {
@@ -30,10 +31,11 @@ export class ReactionsService {
       return
     }
 
-    const oldUserReaction: string = await storageGateway.fetchUserReaction(ip, date)
+    const userIp = headers['x-forwarded-for'].split(',')[0]
+    const oldUserReaction: string = await storageGateway.fetchUserReaction(userIp, date)
     const allReactions: Reactions = await storageGateway.fetchAll(date)
 
-    storageGateway.saveUserReaction(date, ip, reaction)
+    storageGateway.saveUserReaction(date, userIp, reaction)
 
     if (oldUserReaction && oldUserReaction !== reaction) {
       storageGateway.saveAllReactions(date, {
